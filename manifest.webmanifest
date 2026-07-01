@@ -1,0 +1,25 @@
+{
+  "name": "Личный и бизнес-ассистент",
+  "short_name": "Ассистент",
+  "description": "Планирование личных дел и бизнеса через матрицу Эйзенхауэра.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#126b63",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

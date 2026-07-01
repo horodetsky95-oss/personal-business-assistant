@@ -1,4 +1,4 @@
-const CACHE = 'assistant-iphone-v4';
+const CACHE = 'assistant-iphone-v5';
 const ASSETS = ['./index.html', './manifest.webmanifest', './apple-touch-icon.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));

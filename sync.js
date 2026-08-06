@@ -3,6 +3,7 @@
   const authKey = "codex.personalBusinessAssistant.supabaseAuth.v1";
   const statusKey = "codex.personalBusinessAssistant.syncStatus.v1";
   const apiReady = () => Boolean(config.supabaseUrl && config.supabaseAnonKey);
+  const baseUrl = () => String(config.supabaseUrl || "").replace(/\/rest\/v1\/?$/i, "").replace(/\/$/, "");
   let user = null;
   let busy = false;
   let pushTimer = null;
@@ -45,7 +46,7 @@
 
   async function request(path, options = {}) {
     const auth = getAuth();
-    const res = await fetch(config.supabaseUrl.replace(/\/$/, "") + path, {
+    const res = await fetch(baseUrl() + path, {
       ...options,
       headers: { ...headers(auth), ...(options.headers || {}) }
     });
@@ -77,10 +78,11 @@
 
   async function sendMagicLink(email) {
     const redirectTo = location.origin + location.pathname;
-    await fetch(config.supabaseUrl.replace(/\/$/, "") + "/auth/v1/otp", {
+    await fetch(baseUrl() + "/auth/v1/otp", {
       method: "POST",
       headers: {
         apikey: config.supabaseAnonKey,
+        Authorization: "Bearer " + config.supabaseAnonKey,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({

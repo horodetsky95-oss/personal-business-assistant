@@ -52,7 +52,7 @@
     });
     if (!res.ok) {
       const text = await res.text().catch(() => "");
-      throw new Error(text || "Ошибка синхронизации");
+      throw new Error("Supabase " + res.status + ": " + (text || "Ошибка синхронизации"));
     }
     if (res.status === 204) return null;
     return res.json();
@@ -78,7 +78,7 @@
 
   async function sendMagicLink(email) {
     const redirectTo = location.origin + location.pathname;
-    await fetch(baseUrl() + "/auth/v1/otp", {
+    const res = await fetch(baseUrl() + "/auth/v1/otp", {
       method: "POST",
       headers: {
         apikey: config.supabaseAnonKey,
@@ -90,9 +90,11 @@
         create_user: true,
         options: { email_redirect_to: redirectTo }
       })
-    }).then(async (res) => {
-      if (!res.ok) throw new Error(await res.text());
     });
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error("Supabase " + res.status + ": " + (text || "Не удалось отправить письмо"));
+    }
   }
 
   function captureAuthFromUrl() {
@@ -207,7 +209,7 @@
     button.textContent = "Облако";
     button.onclick = () => login().catch((error) => {
       console.warn(error);
-      alert("Не получилось подключить облако. Проверьте настройки Supabase.");
+      alert("Не получилось подключить облако.\n\n" + (error?.message || "Проверьте настройки Supabase."));
     });
     const status = document.createElement("span");
     status.className = "pill";
